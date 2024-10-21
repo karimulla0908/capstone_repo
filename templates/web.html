@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InsureSence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            /* background-color: #f8f9fa; */
+            background-color: #F3F9FB;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Side Panel Styling */
+        .side-panel {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            /* background-color: #007bff; */
+            background-color: #226597;
+            padding-top: 20px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .developer-row {
+            display: flex;
+            flex-direction: row; /* Arrange items in a row */
+            justify-content: space-around; /* Evenly space the items */
+            width: 100%; /* Ensure the row spans full width */
+        }
+
+        .side-panel a {
+            padding: 15px 20px;
+            text-decoration: none;
+            color: white;
+            display: block;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-size: 18px;
+            width: 100%;
+        }
+
+        .side-panel a:hover, .side-panel a.active {
+            background-color: #113F67;
+            color: #f8f9fa;
+            font-weight: bold;
+        }
+
+        /* PDF cards styling */
+        .pdf-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            margin-top: 20px;
+        }
+
+        .pdf-card {
+            background-color: #fff;
+            color: #113F67;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 10px 0;
+            border: 2px solid #113F67;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 80%;
+            margin-left: auto;
+            box-shadow: 12px 12px 15px 1px rgba(0, 0, 255, .2);
+            margin-right: auto;
+        }
+
+        .pdf-card:hover {
+            background-color: #113F67;
+            color: #fff;
+
+        }
+
+        .question-cards {
+            display: flex;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .question-card {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            margin: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: auto;
+            white-space: nowrap; /* Prevent long text from breaking */
+        }
+
+        .question-card:hover {
+            background-color: #226597;
+        }
+
+        /* Content Section */
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            width: calc(100% - 250px);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header styling */
+        header {
+            background-color: #113F67;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 28px;
+            font-weight: bold;
+            flex-shrink: 0;
+            border-radius: 10px;
+        }
+
+        /* Footer styling */
+        footer {
+            background-color: #113F67;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            width: 100%;
+            position: relative;
+            margin-top: auto;
+            border-radius: 10px;
+        }
+
+        /* Chat container */
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: 10px;
+            overflow-y: auto;
+            height: calc(100vh - 150px);
+            background-image: url('1.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .chat-content {
+            padding-bottom: 120px;
+        }
+
+        /* Message box */
+        .message-box {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); */
+            box-shadow: 12px 12px 15px 1px rgba(0, 0, 255, .2);
+
+            /* box-shadow: -12px -12px 15px 1px rgba(0, 0, 255, .2); */
+        }
+
+        .user-message {
+            background-color: #dcf8c6;
+            align-self: flex-end;
+            margin-left: auto;
+            margin-right: 10px;
+            max-width: 60%;
+            text-align: right;
+        }
+
+        .bot-message {
+            background-color: #fff;
+            align-self: flex-start;
+            margin-right: auto;
+            margin-left: 10px;
+            max-width: 60%;
+            text-align: left;
+        }
+
+         /* Card view container */
+         .card-container {
+            display: flex;
+            justify-content: flex-start;
+            margin-top: 5px;
+        }
+
+        .card {
+            cursor: pointer;
+            margin: 5px;
+            padding: 8px;
+            background-color: #f8f9fa;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 12px;
+            max-width: 180px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            box-shadow: 12px 12px 15px 1px rgba(0, 0, 255, .2);
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        
+        .card:hover {
+            transform: scale(1.05);
+            background-color: #226597;
+            color: white;
+        }
+
+        .timestamp {
+            font-size: 10px;
+            color: #777;
+            text-align: right;
+            margin-top: 5px;
+            padding-left: 10px;
+        }
+
+        /* Input group */
+        .input-group {
+            position: fixed;
+            bottom: 50px;
+            width: calc(100% - 250px);
+            background-color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 1;
+            left: 250px;
+        }
+
+        #user-input {
+            width: 80%;
+            margin-right: 10px;
+            border-radius: 50px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        .send-btn {
+            background-color: #113F67;
+            border: none;
+            padding: 10px 20px;
+            color: white;
+            border-radius: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            width: 15%;
+            min-width: 70px;
+        }
+
+        .send-btn:hover {
+            background-color: #226597;
+            transform: scale(1.1);
+        }
+
+        .send-btn:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 768px) {
+            #user-input {
+                width: 60%;
+            }
+
+            .send-btn {
+                width: 20%;
+            }
+        }
+
+        /* Mentor section styling */
+        .mentor-container, .developer-container, .about-us-container {
+            display: none;
+            flex-grow: 1;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .mentor-card{
+            width: 550px;
+            height: 400px;
+            text-align: center;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 25px;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            border: 0.5px solid #113F67;
+            background-color: #fff;
+            box-shadow: 12px 12px 15px 1px rgba(0, 0, 255, .2);
+        }
+
+        .mentor-card:hover {
+            transform: rotate(-5deg); /* Slight rotation */
+            transform: translateY(-25px); /* Slight rotation */
+            box-shadow: 12px 12px 15px 1px rgba(0, 0, 255, .2);
+            ; /* Stronger shadow */
+        }
+
+        .developer-card{
+            width: 400px;
+            height: 290px;
+            text-align: center;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 20px;
+            border: 0.5px solid #113F67;
+            background-color: #fff;
+            box-shadow: 12px 12px 15px 1px rgba(0, 0, 255, .2);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .developer-card:hover {
+            transform: rotate(-5deg); /* Slight rotation */
+            box-shadow: 12px 12px 15px 1px rgba(0, 0, 255, .2);
+            ; /* Stronger shadow */
+        }
+
+        .about-card {
+            width: 900px;
+            height: 500px;
+            text-align: center;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #F3F9FB;
+            /* background-color: #b3d6ff; */
+            /* box-shadow: 20px 20px 15px 1px rgba(0, 0, 255, .2); */
+            box-shadow: 0 0 25px 1px rgba(0, 0, 255, .5);
+        }
+
+        .mentor-card img {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+        }
+
+        .developer-card img, .about-card img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+        }
+
+        .mentor-card h3, .developer-card h3, .about-card h3 {
+            margin-top: 15px;
+            font-size: 20px;
+        }
+
+        .mentor-card p, .developer-card p, .about-card p {
+            color: #777;
+        }
+
+        .developer-card {
+            width: 400px; /* Adjust width to be wider */
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Side Panel -->
+    <div class="side-panel">
+        <a href="#" id="chat-link" class="active" onclick="showChat()">Chat with InsureSence</a>
+        <a href="#" id="mentors-link" onclick="showSummaries()">Summaries</a>
+        <a href="#" id="developers-link" onclick="showDevelopers()">Developers</a>
+        <a href="#" id="mentors-link" onclick="showMentors()">Mentors</a>
+        <!-- <a href="#" id="mentors-link" onclick="">Multiquestions</a> -->
+        <a href="#" id="about-link" onclick="showAboutUs()">About Us</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <header id="main-header">
+            Chat with InsureSence
+        </header>
+
+        <!-- Chat container -->
+        <div class="chat-container" id="chat-window">
+            <div class="chat-content"></div>
+        </div>
+
+        <!-- Mentor section -->
+        <div class="mentor-container" id="mentor-section">
+            <div class="mentor-card">
+                <img src="dev/rm.jpeg" alt="Mentor">
+                <h3 style="color: #113F67;"><b><i>Prof. Regi Mathew</i></b></h3>
+                <p>Professor of Data Science</p>
+            </div>
+            <div class="mentor-card">
+                <img src="dev/ssn.jpg" alt="Mentor">
+                <h3 style="color: #113F67;"><b><i>Prof. Sridhar Srinivasan</i></b></h3>
+                <p>Professor of AI</p>
+            </div>
+        </div>
+
+        <!-- Developer section -->
+        <div class="developer-container" id="developer-section">
+            <div class="developer-row">
+                <div class="developer-card">
+                    <img src="dev/karim.jpg" alt="Shaik Karimulla">
+                    <h4 style="color: #113F67;"><b>Shaik Karimulla</b></h4>
+                    <p>B.Tech (Electronics and Communication Engineering)</p>
+                    <p>PGP - Data Science</p>
+                </div>
+                <div class="developer-card">
+                    <img src="dev/yash.png" alt="Yash Savaliya">
+                    <h4 style="color: #113F67;"><b>Yash Savaliya</b></h4>
+                    <p>B.Tech (Information Technology)</p>
+                    <p>PGP - Data Science</p>
+                </div>
+            </div>
+        
+            <div class="developer-row">
+                <div class="developer-card">
+                    <img src="dev/bramhi.jpg1" alt="Brahmi Rathod">
+                    <h4 style="color: #113F67;"><b>Brahmi Rathod</b></h4>
+                    <p>B.E. (Electronics and Telecommunications)</p>
+                    <p>PGP - Data Science</p>
+                </div>
+                <div class="developer-card">
+                    <img src="dev/payal.jpg" alt="Payal Suryawanshi">
+                    <h4 style="color: #113F67;"><b>Payal Suryawanshi</b></h4>
+                    <p>B.E (Civil engineering)</p>
+                    <p>PGP - Data Science</p>
+                </div>
+                <div class="developer-card">
+                    <img src="dev/yasira.png" alt="Yasira Halim">
+                    <h4 style="color: #113F67;"><b>Yasira Halim</b></h4>
+                    <p>B. Com</p>
+                    <p>PGP - Data Science</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summaries Section -->
+        <div class="pdf-container" id="summaries-section">
+            <!-- Dynamic PDFs will be inserted here -->
+        </div>
+
+
+        <!-- About Us Section -->
+        <div class="about-us-container" id="about-section">
+            <div class="about-card">
+                <h1 style="color: #226597;"><b><i>What is InsureSense..?</i></b></h1>
+                <p>This project involves integrating a smart chatbot using natural language processing technologies.</p>
+            </div>
+            <!-- <div class="about-card">
+                <h3>Project 2: Cloud Deployment</h3>
+                <p>InsureSence is deployed on a scalable cloud infrastructure ensuring high availability and performance.</p>
+            </div>
+            <div class="about-card">
+                <h3>Project 3: Data Analytics</h3>
+                <p>Built advanced data analytics pipelines to process and visualize complex insurance datasets.</p>
+            </div> -->
+        </div>
+
+        <!-- Input form -->
+        <div class="input-group mb-3" id="chat-input-box">
+            <input type="text" id="user-input" class="form-control" placeholder="Type your message here...">
+            <button class="send-btn" id="send-btn">Send</button>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <h5>Crafted with ❤️ by InsureSense Squad at Praxis Tech School..</h5>
+        </footer>
+    </div>
+
+    <!-- Include Axios for API calls -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const chatWindow = document.getElementById('chat-window');
+        const mentorSection = document.getElementById('mentor-section');
+        const developerSection = document.getElementById('developer-section');
+        const aboutSection = document.getElementById('about-section');
+        const chatInputBox = document.getElementById('chat-input-box');
+        const header = document.getElementById('main-header');
+        const summariesSection = document.getElementById('summaries-section');
+
+
+        function showChat() {
+            header.innerText = "Welcome to InsureSence Chatbot";
+            chatWindow.style.display = 'flex';
+            mentorSection.style.display = 'none';
+            developerSection.style.display = 'none';
+            aboutSection.style.display = 'none';
+            summariesSection.style.display = 'none';
+            chatInputBox.style.display = 'flex';
+            highlightTab('chat-link');
+        }
+
+        function showMentors() {
+            header.innerText = "Meet our mentors..!!";
+            chatWindow.style.display = 'none';
+            mentorSection.style.display = 'flex';
+            developerSection.style.display = 'none';
+            aboutSection.style.display = 'none';
+            summariesSection.style.display = 'none';
+            chatInputBox.style.display = 'none';
+            highlightTab('mentors-link');
+        }
+
+        function showDevelopers() {
+            header.innerText = "The people behind InsureSence";
+            chatWindow.style.display = 'none';
+            mentorSection.style.display = 'none';
+            developerSection.style.display = 'flex';
+            aboutSection.style.display = 'none';
+            summariesSection.style.display = 'none';
+            chatInputBox.style.display = 'none';
+            highlightTab('developers-link');
+        }
+
+        function showAboutUs() {
+            header.innerText = "About Us";
+            chatWindow.style.display = 'none';
+            mentorSection.style.display = 'none';
+            developerSection.style.display = 'none';
+            aboutSection.style.display = 'flex';
+            summariesSection.style.display = 'none';
+            chatInputBox.style.display = 'none';
+            highlightTab('about-link');
+        }
+
+        function showSummaries() {
+            header.innerText = "Summaries";
+            chatWindow.style.display = 'none';
+            mentorSection.style.display = 'none';
+            developerSection.style.display = 'none';
+            aboutSection.style.display = 'none';
+            summariesSection.style.display = 'flex';
+            fetchPDFs(); // Fetch and display PDFs dynamically
+            chatInputBox.style.display = 'none';
+            highlightTab('summaries-link');
+        }
+
+        function highlightTab(activeTabId) {
+            const tabs = document.querySelectorAll('.side-panel a');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(activeTabId).classList.add('active');
+        }
+
+        
+
+        // Fetch PDFs and create dynamic card views
+        function fetchPDFs() {
+            axios.get('/api/get_pdfs')
+                .then(response => {
+                    const pdfs = response.data.pdfs;
+                    summariesSection.innerHTML = ''; // Clear previous content
+
+                    pdfs.forEach(pdf => {
+                        const card = document.createElement('div');
+                        card.classList.add('pdf-card');
+                        card.innerText = pdf;
+
+                        // Make the card clickable to open the PDF
+                        card.addEventListener('click', () => {
+                            window.open(`/api/pdf/${pdf}`, '_blank');
+                        });
+
+                        summariesSection.appendChild(card);
+                    });
+                })
+                .catch(error => console.error('Error fetching PDFs:', error));
+        }
+
+        const chatContent = document.querySelector('.chat-content');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+
+        userInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                sendBtn.click();
+            }
+        });
+
+        sendBtn.addEventListener('click', () => {
+            const message = userInput.value.trim();
+            if (message) {
+                displayUserMessage(message);
+                sendMessageToServer(message);
+                userInput.value = '';  // Clear input
+            }
+        });
+
+        function displayUserMessage(message) {
+            const div = document.createElement('div');
+            div.classList.add('user-message', 'message-box');
+            div.innerHTML = message + `<div class="timestamp">${getCurrentTime()}</div>`;
+            chatContent.appendChild(div);
+            scrollChatToBottom();
+        }
+
+        // Display bot response
+        function displayBotMessage(message, questions) {
+            const div = document.createElement('div');
+            div.classList.add('bot-message', 'message-box');
+            div.innerHTML = message + `<div class="timestamp">${getCurrentTime()}</div>`;
+            chatContent.appendChild(div);
+            scrollChatToBottom();
+
+            displayQuestionCards(questions);
+        }
+
+        // Send message to Flask server
+        function sendMessageToServer(message) {
+            axios.post('/api/chat', { message: message })
+                .then(response => {
+                    const { reply, questions } = response.data;
+                    displayBotMessage(reply, questions);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // function sendMessageToServer(message) {
+        //     axios.post('/api/chat', { message: message })
+        //         .then(response => {
+        //             const reply = response.data.reply;
+        //             const suggestedQuestions = response.data.suggested_questions || []; // Handling the suggested questions
+
+        //             displayBotMessage(reply);
+        //             if (suggestedQuestions.length > 0) {
+        //                 displaySuggestedQuestions(suggestedQuestions); // Dynamically display the questions
+        //             }
+        //         })
+        //         .catch(error => console.error('Error:', error));
+        // }
+
+
+        // Display question cards below the bot message
+        function displayQuestionCards(questions) {
+            const cardContainer = document.createElement('div');
+            cardContainer.classList.add('card-container');
+            questions.forEach((q) => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.innerHTML = `<strong>${q.question}</strong>`;
+                card.addEventListener('click', () => {
+                    sendCardQuestion(q.question);
+                });
+                cardContainer.appendChild(card);
+            });
+            chatContent.appendChild(cardContainer);
+            scrollChatToBottom();
+        }
+
+        
+
+        // Send question from card click
+        function sendCardQuestion(question) {
+            displayUserMessage(question);
+            sendMessageToServer(question);
+        }
+
+
+        function displaySuggestedQuestions(questions) {
+            const questionCardsContainer = document.createElement('div');
+            questionCardsContainer.classList.add('question-cards');
+
+            questions.forEach(question => {
+                const questionCard = document.createElement('div');
+                questionCard.classList.add('question-card');
+                questionCard.innerText = question;
+
+                // Add a click event to send the selected question to the server
+                questionCard.addEventListener('click', () => {
+                    displayUserMessage(question);
+                    sendMessageToServer(question);
+                });
+
+                questionCardsContainer.appendChild(questionCard);
+            });
+
+            // Append the question cards to the chat container
+            chatContent.appendChild(questionCardsContainer);
+            scrollChatToBottom();
+        }
+
+        function getCurrentTime() {
+            const now = new Date();
+            return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function scrollChatToBottom() {
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        showChat();
+    </script>
+</body>
+</html>
